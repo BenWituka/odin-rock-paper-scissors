@@ -11,7 +11,8 @@ function getComputerChoice() {
         case 2:
             return "scissors";
         default:
-            throw new Error("Logic error: randomNumber should be an integer between 0 and 2");
+            throw new Error("Logic error: randomNumber should be \
+                an integer between 0 and 2");
     }
 }
 
@@ -19,7 +20,8 @@ function getHumanChoice() {
     let humanChoice = prompt("Enter your choice, puny human.");
     while (humanChoice != "rock" && humanChoice != "paper"
         && humanChoice!= "scissors") {
-            humanChoice = prompt("Fool! You must choose rock, paper or scissors");
+            humanChoice = prompt("Fool! You must choose rock, \
+                paper or scissors");
     }
     return humanChoice;
 }
