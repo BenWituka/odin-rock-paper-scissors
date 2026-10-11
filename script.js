@@ -1,5 +1,19 @@
 
-playGame();
+const btnRock = document.querySelector("#btnRock");
+const btnPaper = document.querySelector("#btnPaper");
+const btnScissors = document.querySelector("#btnScissors");
+const computerComment = document.querySelector("#computerComment");
+const spanHumanScore = document.querySelector("#humanScore");
+const spanComputerScore = document.querySelector("#computerScore");
+
+let humanScore = 0;
+let computerScore = 0;
+let gameOver = false;
+
+btnRock.addEventListener("click", () => playRound("Rock", getComputerChoice()));
+btnPaper.addEventListener("click", () => playRound("Paper", getComputerChoice()));
+btnScissors.addEventListener("click", () => playRound("Scissors", getComputerChoice()));
+
 
 function getComputerChoice() {
     randomNumber = Math.floor(Math.random() * 3);
@@ -16,68 +30,58 @@ function getComputerChoice() {
     }
 }
 
-function getHumanChoice() {
-    let humanChoice = prompt("Enter your choice, puny human.");
-    while (humanChoice != "rock" && humanChoice != "paper"
-        && humanChoice!= "scissors") {
-            humanChoice = prompt("Fool! You must choose rock, \
-                paper or scissors");
+function playRound(humanChoice, computerChoice) {
+    humanChoice = humanChoice.toLowerCase();
+    let choices = computerChoice + humanChoice;
+    switch (choices) {
+        case "rockrock": 
+            computerComment.textContent = "Our rocks have touched! it is a tie.";
+            break;
+        case "rockpaper":
+            computerComment.textContent = "Paper beats rock, I have been defeated.";
+            humanScore++;
+            break;
+        case "rockscissors":
+            computerComment.textContent = "I have destroyed your scissors, puny human.";
+            computerScore++;
+            break;
+        case "paperrock":
+            computerComment.textContent = "You are smothered, yield.";
+            computerScore++;
+            break;
+        case "paperpaper":
+            computerComment.textContent = "The outcome of this paper battle is irrelevant";
+            break;
+        case "paperscissors":
+            computerComment.textContent = "I have been cut, you have bested me.";
+            humanScore++;
+            break;
+        case "scissorsrock":
+            computerComment.textContent = "NO! It cannot be. I have been crushed.";
+            humanScore++;
+            break;
+        case "scissorspaper":
+            computerComment.textContent = "You are no match for my blade.";
+            computerScore++;
+            break;
+        case "scissorsscissors":
+            computerComment.textContent = "Our blades have met, neither can make progress.";
+            break;
+        default:
+            throw new Error(`LogicError: invalid choices, ${choices}`);
     }
-    return humanChoice;
-}
 
+    spanHumanScore.textContent = humanScore
+    spanComputerScore.textContent = computerScore;
 
-
-function playGame() {
-
-    let humanScore = 0;
-    let computerScore = 0;
-
-    for (let i = 0; i < 5; i++) {
-        playRound(getHumanChoice(), getComputerChoice());
-        console.log(`Human score: ${humanScore}`);
-        console.log(`Computer score: ${computerScore}`);
-    }
-
-    function playRound(humanChoice, computerChoice) {
-        humanChoice = humanChoice.toLowerCase();
-        let choices = computerChoice + humanChoice;
-        switch (choices) {
-            case "rockrock": 
-                console.log("Our rocks have touched! it is a tie.");
-                return;
-            case "rockpaper":
-                console.log("Paper beats rock, I have been defeated.");
-                humanScore++;
-                return;
-            case "rockscissors":
-                console.log("I have destroyed your scissors, puny human.");
-                computerScore++;
-                return;
-            case "paperrock":
-                console.log("You are smothered, yield.");
-                computerScore++;
-                return;
-            case "paperpaper":
-                console.log("The outcome of this paper battle is irrelevant");
-                return;
-            case "paperscissors":
-                console.log("I have been cut, you have bested me.");
-                humanScore++;
-                return;
-            case "scissorsrock":
-                console.log("NO! It cannot be. I have been crushed.");
-                humanScore++;
-                return;
-            case "scissorspaper":
-                console.log("You are no match for my blade.");
-                computerScore++;
-                return;
-            case "scissorsscissors":
-                console.log("Our blades have met, neither can make progress.");
-                return;
-            default:
-                throw new Error(`LogicError: invalid choices, ${choices}`);
+    if (!gameOver) {
+        if (humanScore >= 5) {
+            gameOver = true;
+            alert("You have won the game! Refresh the browser to start again.")
+        }
+        else if (computerScore >= 5) {
+            gameOver = true;
+            alert("You have lost the game. Refresh the browser to start again.")
         }
     }
 
